@@ -4,7 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        circleobject.cpp \
+        circlesolver.cpp \
         main.cpp \
         renderer.cpp
 
@@ -17,5 +17,5 @@ CONFIG(debug, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-ma
 CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-system -lsfml-window
 
 HEADERS += \
-    circleobject.h \
+    circlesolver.h \
     renderer.h
