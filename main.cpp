@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/System.hpp>
 #include <circlesolver.h>
 #include <renderer.h>
 
@@ -16,7 +17,7 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(width, height), "PhysicsEngine", sf::Style::Default, settings);
 
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(144);
 
     CircleSolver solver;
 
@@ -25,6 +26,7 @@ int main()
     sf::Vector2i mousePosition;
     sf::Vector2f coords;
 
+    sf::Clock clock;
 
     while (window.isOpen()) {
         sf::Event event{};
@@ -40,12 +42,16 @@ int main()
             }
         }
 
+        sf::Time time = clock.getElapsedTime();
+        float seconds = time.asSeconds();
         window.clear();
+        solver.Update(seconds);
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             mousePosition = sf::Mouse::getPosition(window);
             coords.x = (float)mousePosition.x;
             coords.y = (float)mousePosition.y;
+            std::cout << "X: " << coords.x << ", Y: " << coords.y << std::endl;
             solver.AddObject(coords);
 
         }

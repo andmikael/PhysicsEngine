@@ -3,7 +3,6 @@
 Renderer::Renderer(sf::RenderTarget& window)
     : window_target{window}
 {
-
 }
 
 void Renderer::Render(CircleSolver& obj) {
