@@ -27,6 +27,8 @@ int main()
     sf::Vector2f coords;
 
     sf::Clock clock;
+    float prev_time = 0.0f;
+    float dt = 0.0f;
 
     while (window.isOpen()) {
         sf::Event event{};
@@ -34,18 +36,23 @@ int main()
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            if (event.type == sf::Event::KeyPressed) {
+            /*if (event.type == sf::Event::KeyPressed) {
                 if (event.key.scancode == sf::Keyboard::Scan::R) {
                     solver.Clear();
                     window.clear();
                 }
-            }
+            }*/
         }
 
         sf::Time time = clock.getElapsedTime();
         float seconds = time.asSeconds();
+        if (prev_time == 0.0f) {
+            prev_time = seconds;
+        }
+        dt = seconds - prev_time;
+        prev_time = seconds;
         window.clear();
-        solver.Update(seconds);
+        solver.Update(dt);
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             mousePosition = sf::Mouse::getPosition(window);
