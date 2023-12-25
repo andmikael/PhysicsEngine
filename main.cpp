@@ -17,7 +17,7 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(width, height), "PhysicsEngine", sf::Style::Default, settings);
 
-    window.setFramerateLimit(144);
+    window.setFramerateLimit(60);
 
     CircleSolver solver;
 
@@ -58,7 +58,7 @@ int main()
             mousePosition = sf::Mouse::getPosition(window);
             coords.x = (float)mousePosition.x;
             coords.y = (float)mousePosition.y;
-            std::cout << "X: " << coords.x << ", Y: " << coords.y << std::endl;
+            //std::cout << "X: " << coords.x << ", Y: " << coords.y << std::endl;
             solver.AddObject(coords);
 
         }

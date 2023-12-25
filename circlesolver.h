@@ -9,29 +9,25 @@
 const float GRAVITY = 9.81f;
 const float AIR_FRICTION = 0.5f;
 
+struct AABB {
+    sf::Vector2f min;
+    sf::Vector2f max;
+};
+
 struct CircleObject {
     sf::Vector2f position;
     sf::Vector2f lastPosiiton;
     sf::Vector2f acceleration;
     sf::Vector2f velocity;
-    float radius = 10.0f;
+    float radius = 20.0f;
     sf::Color color = sf::Color::White;
-    float weight = 1.0f;
     float timeAlive = 0.0f;
-    float inertia = 0.5*weight*pow(radius, 2);
-    float angle;
-    float angularVelocity;
-    sf::Vector2f Force;
-    float torque;
 
     CircleObject(sf::Vector2f position_)
         : position{position_}
+        , lastPosiiton{position_}
         , acceleration{sf::Vector2f{0.0f, 0.0f}}
-        , Force{sf::Vector2{0.0f, 0.0f}}
-        , velocity{sf::Vector2f{0.0f, 1.0f}}
-        , angle{0.0f}
-        , angularVelocity{0.0f}
-
+        , velocity{sf::Vector2f{0.0f, 0.0f}}
     {}
 };
 
@@ -41,13 +37,13 @@ public:
     CircleSolver();
     void AddObject(sf::Vector2f position);
     void Update(float seconds);
-    std::vector<CircleObject> GetObjects();
-    void Clear();
-    void computeForce(CircleObject& obj);
-    void CheckBorderCollision(CircleObject& obj);
+    void CheckBorderCollision(std::unique_ptr<CircleObject>& obj);
+    void check(float seconds);
+    void updatePosition(std::unique_ptr<CircleObject>& obj, float dt);
+    void addAcceleration(std::unique_ptr<CircleObject>& obj);
+    void addAge(std::unique_ptr<CircleObject>& obj, float dt);
 
-private:
-    std::vector<CircleObject> objects;
+    std::vector<std::unique_ptr<CircleObject>> objects;
 };
 
 #endif // CIRCLESOLVER_H
