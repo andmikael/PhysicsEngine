@@ -8,14 +8,16 @@ SOURCES += \
         main.cpp \
         renderer.cpp
 
-INCLUDEPATH += D:\ohjelmat\repos\personal\cpp\sfml\SFML-2.6.1-sources\SFML-2.6.1\include
-DEPENDPATH += D:\ohjelmat\repos\personal\cpp\sfml\SFML-2.6.1-sources\SFML-2.6.1\include
 
-LIBS += -LD:\ohjelmat\repos\personal\cpp\sfml\sfml_build\libs\
+# -- SFML dependencies used with windows --
+#INCLUDEPATH += <path to SFML source code include folder>
+#DEPENDPATH += <path to SFML source code include folder>
 
-CONFIG(debug, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main-d -lsfml-network-d -lsfml-system-d -lsfml-window-d
-CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-system -lsfml-window
+#LIBS += -L<path to compiled SFML library folder>
 
+#CONFIG(debug, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main-d -lsfml-network-d -lsfml-system-d -lsfml-window-d
+#CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-system -lsfml-window
+# -------------------------------
 HEADERS += \
     circlesolver.h \
     renderer.h
