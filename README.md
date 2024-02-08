@@ -1,6 +1,9 @@
 # PhysicsEngine
 A small C++ program used to simulate rudamentary object physics and collision using SFML library in Qt Creator.
 
+Currently to run PhysicsEngine you need to use Qt Creator in Linux.
+The plan is to update this repository with a correct Makefile so it can me compiled without needing Qt Creator.
+
 It uses verlet integration to calculate object motion.
 
 To run the program in linux:
