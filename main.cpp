@@ -4,18 +4,18 @@
 #include <SFML/System.hpp>
 #include <circlesolver.h>
 #include <renderer.h>
+#include <constants.h>
+#include <cstdlib>
 
 using namespace std;
 
 int main()
 {
-    constexpr int32_t width = 1280;
-    constexpr int32_t height = 720;
 
     sf::ContextSettings settings;
     settings.antialiasingLevel = 1;
 
-    sf::RenderWindow window(sf::VideoMode(width, height), "PhysicsEngine", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(window_width, window_height), "PhysicsEngine", sf::Style::Default, settings);
 
     window.setFramerateLimit(60);
 
@@ -29,14 +29,17 @@ int main()
     sf::Clock clock;
     float prev_time = 0.0f;
     float dt = 0.0f;
+    bool is_pressed = false;
+    int lb = 15;
+    int ub = 35;
 
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
-            }
-            /*if (event.type == sf::Event::KeyPressed) {
+            }/*
+            if (event.type == sf::Event::KeyPressed) {
                 if (event.key.scancode == sf::Keyboard::Scan::R) {
                     solver.Clear();
                     window.clear();
@@ -55,12 +58,23 @@ int main()
         solver.Update(dt);
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            mousePosition = sf::Mouse::getPosition(window);
-            coords.x = (float)mousePosition.x;
-            coords.y = (float)mousePosition.y;
-            //std::cout << "X: " << coords.x << ", Y: " << coords.y << std::endl;
-            solver.AddObject(coords);
+            if (!is_pressed) {
+                is_pressed = true;
+                mousePosition = sf::Mouse::getPosition(window);
+                coords.x = (float)mousePosition.x;
+                coords.y = (float)mousePosition.y;
+                float rad = float(rand() % (ub - lb + 1)) + lb;
+                //float rad = 20;
+                solver.AddObject(coords, rad);
+            }
 
+        }
+
+        if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            is_pressed = false;
+            //if (event.mouseButton.button == sf::Mouse::Left && is_pressed == true) {
+            //    is_pressed = false;
+            //}
         }
         renderer.Render(solver);
         window.display();
