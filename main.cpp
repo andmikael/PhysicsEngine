@@ -2,9 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
-#include <circlesolver.h>
-#include <renderer.h>
-#include <constants.h>
+#include "circlesolver.h"
+#include "renderer.h"
+#include "constants.h"
 #include <cstdlib>
 
 using namespace std;
@@ -15,7 +15,7 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 1;
 
-    sf::RenderWindow window(sf::VideoMode(window_width, window_height), "PhysicsEngine", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "PhysicsEngine", sf::Style::Default, settings);
 
     window.setFramerateLimit(60);
 

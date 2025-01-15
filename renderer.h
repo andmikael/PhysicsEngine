@@ -1,8 +1,6 @@
 #pragma once
-#ifndef RENDERER_H
-#define RENDERER_H
 #include <SFML/Graphics.hpp>
-#include <circlesolver.h>
+#include "circlesolver.h"
 
 
 class Renderer
@@ -15,5 +13,3 @@ public:
 private:
     sf::RenderTarget& window_target;
 };
-
-#endif // RENDERER_H

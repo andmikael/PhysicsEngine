@@ -1,7 +1,7 @@
 #include "circlesolver.h"
 #include <iostream>
 #include <memory>
-#include <constants.h>
+#include "constants.h"
 #include <SFML/Window.hpp>
 
 CircleSolver::CircleSolver()
@@ -14,19 +14,6 @@ void CircleSolver::AddObject(sf::Vector2f position, float radius) {
 }
 
 void CircleSolver::Update(float seconds) {
-    /*uint64_t objects_size = objects.size();
-
-    // randomized lifetime for objects before they are destroyed
-    int lb = 8, ub = 40;
-    for (uint64_t i{0}; i < objects_size; i++ ) {
-        float r = (float)((rand() % (ub-lb+1)) +lb);
-        if (objects[i]->timeAlive > r) {
-            objects.erase(objects.begin() + i);
-            objects_size = objects.size();
-            i--;
-        }
-    }*/
-
     CheckObjectCollision();
 
     const uint64_t objects_size2 = objects.size();
@@ -40,7 +27,7 @@ void CircleSolver::Update(float seconds) {
 
 void CircleSolver::CheckConstraint(std::unique_ptr<CircleObject>& obj) {
 
-    if (obj->position.y + obj->radius >= window_height - obj->radius || obj->position.y + obj->radius <= 0) {
+    if (obj->position.y + (2*obj->radius) >= WINDOW_HEIGHT || obj->position.y + obj->radius <= 0) {
         float dist = abs(obj->position.y - obj->lastPosiiton.y);
         float cached_pos_y = obj->position.y;
         obj->position.y = obj->lastPosiiton.y;
@@ -55,12 +42,12 @@ void CircleSolver::CheckConstraint(std::unique_ptr<CircleObject>& obj) {
         }
     }
 
-    if (obj->position.x >= (1200 + obj->radius)) {
+    if (obj->position.x + (2*obj->radius) >= WINDOW_WIDTH) {
         float cached_pos_x = obj->position.x;
         obj->position.x = obj->lastPosiiton.x;
         obj->lastPosiiton.x = cached_pos_x;
 
-    } else if (obj->position.x <= (0 + obj->radius)) {
+    } else if (obj->position.x <= 0) {
         float cached_pos_x = obj->position.x;
         obj->position.x = obj->lastPosiiton.x;
         obj->lastPosiiton.x = cached_pos_x;
@@ -75,8 +62,9 @@ void CircleSolver::CheckObjectCollision() {
         for (uint64_t k{i+1}; k < objects_count; k++) {
             std::unique_ptr<CircleObject>& obj2 = objects[k];
 
-            // calculate the position difference of two object
+            // calculate the position difference of two objects
             const sf::Vector2f v = obj1->position - obj2->position;
+            //std::cout << v.x << " " << v.y << std::endl;
 
             //const float dist2 = v.x * v.x + v.y * v.y;
 
@@ -98,18 +86,18 @@ void CircleSolver::CheckObjectCollision() {
 
 
                 // check if displacement would place obj1 through the floor
-                if (obj1->position.y + obj1->radius - n.y * (obj2_mass_ratio * delta) >= window_height) {
+                if ((obj1->position.y + obj1->radius) + (n.y * (obj2_mass_ratio * delta)) >= WINDOW_HEIGHT) {
                     sf::Vector2f temp = n * (obj2_mass_ratio * delta);
-                    temp.y = 0.0f;
+                    temp.y = obj1->radius;
                     obj1->position -= temp;
                 } else {
                     obj1->position -= n * (obj2_mass_ratio * delta);
                 }
 
-                if (obj2->position.y + obj2->radius + n.y * (obj1_mass_ratio * delta) >= window_height) {
+                if ((obj2->position.y + obj2->radius) + (n.y * (obj1_mass_ratio * delta)) >= WINDOW_HEIGHT) {
                     sf::Vector2f temp = n * (obj1_mass_ratio * delta);
-                    temp.y = 0.0f;
-                    obj2->position += temp;
+                    temp.y = obj2->radius;
+                    obj2->position -= temp;
                 } else {
                     obj2->position += n * (obj1_mass_ratio * delta);
                 }

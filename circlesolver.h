@@ -1,10 +1,9 @@
 #pragma once
-#ifndef CIRCLESOLVER_H
-#define CIRCLESOLVER_H
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <math.h>
+#include <memory>
 
 const float GRAVITY = 1000.0f;
 
@@ -44,5 +43,3 @@ public:
 
     std::vector<std::unique_ptr<CircleObject>> objects;
 };
-
-#endif // CIRCLESOLVER_H
