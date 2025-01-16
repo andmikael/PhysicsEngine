@@ -16,20 +16,17 @@ int main()
     settings.antialiasingLevel = 1;
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "PhysicsEngine", sf::Style::Default, settings);
-
     window.setFramerateLimit(60);
 
     CircleSolver solver;
-
     Renderer renderer(window);
 
     sf::Vector2i mousePosition;
     sf::Vector2f coords;
 
-    sf::Clock clock;
-    float prev_time = 0.0f;
-    float dt = 0.0f;
     bool is_pressed = false;
+
+    // variables for creating verlet objects of random size
     int lb = 15;
     int ub = 35;
 
@@ -38,24 +35,11 @@ int main()
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
-            }/*
-            if (event.type == sf::Event::KeyPressed) {
-                if (event.key.scancode == sf::Keyboard::Scan::R) {
-                    solver.Clear();
-                    window.clear();
-                }
-            }*/
+            }
         }
 
-        sf::Time time = clock.getElapsedTime();
-        float seconds = time.asSeconds();
-        if (prev_time == 0.0f) {
-            prev_time = seconds;
-        }
-        dt = seconds - prev_time;
-        prev_time = seconds;
         window.clear();
-        solver.Update(dt);
+        solver.Update();
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             if (!is_pressed) {
@@ -63,18 +47,14 @@ int main()
                 mousePosition = sf::Mouse::getPosition(window);
                 coords.x = (float)mousePosition.x;
                 coords.y = (float)mousePosition.y;
-                float rad = float(rand() % (ub - lb + 1)) + lb;
-                //float rad = 20;
-                solver.AddObject(coords, rad);
+                //float rad = float(rand() % (ub - lb + 1)) + lb;
+                solver.AddObject(coords, 20);
             }
 
         }
 
         if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             is_pressed = false;
-            //if (event.mouseButton.button == sf::Mouse::Left && is_pressed == true) {
-            //    is_pressed = false;
-            //}
         }
         renderer.Render(solver);
         window.display();

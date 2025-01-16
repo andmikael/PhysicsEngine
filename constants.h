@@ -2,5 +2,8 @@
 
 #include <SFML/Window.hpp>
 
-inline const int32_t WINDOW_WIDTH = 1280;
-inline const int32_t WINDOW_HEIGHT = 720;
+// PHYSICS CONSTANTS
+#define GRAVITY {0.0f, 200.0f}
+#define MARGIN_WIDTH 2.0f
+#define RESPONSE_COEF 0.5f
+#define ELASTIC_COEFF 1.0f

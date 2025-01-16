@@ -4,8 +4,11 @@
 #include <SFML/System/Vector2.hpp>
 #include <math.h>
 #include <memory>
+#include "constants.h"
+#include "time.h"
 
-const float GRAVITY = 1000.0f;
+inline const int32_t WINDOW_WIDTH = 1280;
+inline const int32_t WINDOW_HEIGHT = 720;
 
 struct AABB {
     sf::Vector2f min;
@@ -16,6 +19,10 @@ struct CircleObject {
     sf::Vector2f position;
     sf::Vector2f lastPosiiton;
     sf::Vector2f acceleration;
+    sf::Vector2f velocity;
+
+    float start_time;
+
     float radius = 20.0f;
     sf::Color color = sf::Color::White;
     float timeAlive = 0.0f;
@@ -24,22 +31,25 @@ struct CircleObject {
     CircleObject(sf::Vector2f position_, float radius_)
         : position{position_}
         , lastPosiiton{position_}
-        , acceleration{sf::Vector2f{50.0f, GRAVITY}}
+        , acceleration{sf::Vector2f(GRAVITY)}
         , radius{radius_}
+        , start_time{Time::getTime()}
     {}
 };
 
 class CircleSolver
 {
 public:
-    CircleSolver();
     void AddObject(sf::Vector2f position, float radius);
-    void Update(float seconds);
-    void CheckConstraint(std::unique_ptr<CircleObject>& obj);
+    void Update();
+    void CheckConstraint(CircleObject* circleObject);
     void CheckObjectCollision();
-    void updatePosition(std::unique_ptr<CircleObject>& obj, float dt);
-    void addAcceleration(std::unique_ptr<CircleObject>& obj);
-    void addAge(std::unique_ptr<CircleObject>& obj, float dt);
+    sf::Vector2f calculateVelocity(CircleObject* circleObject);
+    sf::Vector2f calculateDisplacement(CircleObject* circleObject, float dt);
+    void updatePosition(CircleObject* circleObject);
+    void addAcceleration(CircleObject* circleObject, sf::Vector2f acceleration);
+    void applyBorders(CircleObject* obj);
+    void solveCollision(CircleObject* obj1, CircleObject* obj2);
 
-    std::vector<std::unique_ptr<CircleObject>> objects;
+    std::vector<CircleObject *> objects = std::vector<CircleObject *>();
 };
