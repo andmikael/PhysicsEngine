@@ -5,6 +5,7 @@
 #include "circlesolver.h"
 #include "renderer.h"
 #include "constants.h"
+#include "circlecollider.h"
 #include <cstdlib>
 
 using namespace std;
@@ -20,6 +21,7 @@ int main()
 
     CircleSolver solver;
     Renderer renderer(window);
+    std::vector<CircleCollider *> circleColliders = std::vector<CircleCollider *>();
 
     sf::Vector2i mousePosition;
     sf::Vector2f coords;
@@ -51,12 +53,24 @@ int main()
                 solver.AddObject(coords, 20);
             }
 
+        } else if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+            if (!is_pressed) {
+                is_pressed = true;
+                mousePosition = sf::Mouse::getPosition(window);
+                coords.x = (float)mousePosition.x;
+                coords.y = (float)mousePosition.y;
+                CircleCollider* circleCollider = new CircleCollider(coords, 300.0f, 1.0f, true, true, 128);
+                circleColliders.push_back(circleCollider);
+            }
         }
 
-        if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && !sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
             is_pressed = false;
         }
         renderer.Render(solver);
+        for (const auto collider : circleColliders) {
+            collider->draw(&window);
+        }
         window.display();
     }
     return 0;
