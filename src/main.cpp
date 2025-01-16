@@ -5,7 +5,6 @@
 #include "circlesolver.h"
 #include "renderer.h"
 #include "constants.h"
-#include "circlecollider.h"
 #include <cstdlib>
 
 using namespace std;
@@ -42,6 +41,9 @@ int main()
 
         window.clear();
         solver.Update();
+        for (auto collider : circleColliders) {
+            solver.CheckColliderConstraint(collider);
+        }
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             if (!is_pressed) {

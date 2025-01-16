@@ -22,6 +22,12 @@ void CircleSolver::Update() {
     }
 }
 
+void CircleSolver::CheckColliderConstraint(CircleCollider *collider) {
+    for (auto obj : objects) {
+        collider->apply(obj);
+    }
+}
+
 /*
     Applies border collisions
 */

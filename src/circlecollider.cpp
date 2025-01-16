@@ -42,6 +42,43 @@
         circle.setPointCount(this->point_count);
         window->draw(circle);
     }
-    void CircleCollider::apply() {
+    void CircleCollider::apply(CircleObject* obj) {
+        if (!this->outside_collision && !this->inside_collision) {
+            return;
+        }
+            // Calculate the distance between the ball and the circle
+            sf::Vector2f dist = obj->position - this->position;
+            float magnitude = sqrt(dist.x * dist.x + dist.y * dist.y) + 1.0e-9f;
 
+            // Check if the ball is inside the collider
+            if (this->inside_collision)
+            {
+                float delta = this->radius - obj->radius - this->outline_width;
+                bool ball_colliding_with_circle = magnitude >= delta;
+                bool ball_inside_circle = magnitude < this->radius;
+
+                if (ball_colliding_with_circle && (!this->outside_collision || ball_inside_circle))
+                {   
+                    obj->position += dist / magnitude * (delta - magnitude);
+                    return;
+                }
+            }
+
+            // Check if the ball is outside the collider
+            if (this->outside_collision)
+            {
+                float rad_sum = obj->radius + this->radius + this->outline_width;
+                bool ball_colliding_with_circle = magnitude <= rad_sum;
+                bool ball_outside_circle = magnitude > this->radius;
+
+                if (ball_colliding_with_circle && (!this->inside_collision || ball_outside_circle))
+                {
+                    // Calculate the ball overlap (the amount the balls have overlapped)
+                    sf::Vector2f overlap = dist / magnitude;
+                    float offset = ((obj->radius * 2.0f) + this->radius + this->outline_width);
+
+                    // Update this balls position (move it to the side)
+                    obj->position += (overlap * 0.5f * (offset - magnitude));
+                }
+            }
     }

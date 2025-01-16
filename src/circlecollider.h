@@ -2,6 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
+#include "circlesolver.h"
+
+// forward declaration to avoid circular dependencies
+struct CircleObject;
 
 class CircleCollider {
     public:
@@ -24,5 +28,5 @@ class CircleCollider {
         void enableInsideCollisions(bool val);
         void enableOutsideCollisions(bool val);
         void draw(sf::RenderWindow *window);
-        void apply();
+        void apply(CircleObject* obj);
 };

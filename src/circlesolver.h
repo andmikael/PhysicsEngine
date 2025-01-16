@@ -6,6 +6,9 @@
 #include <memory>
 #include "constants.h"
 #include "time.h"
+#include "circlecollider.h"
+
+class CircleCollider;
 
 inline const int32_t WINDOW_WIDTH = 1280;
 inline const int32_t WINDOW_HEIGHT = 720;
@@ -42,6 +45,7 @@ class CircleSolver
 public:
     void AddObject(sf::Vector2f position, float radius);
     void Update();
+    void CheckColliderConstraint(CircleCollider * collider);
     void CheckConstraint(CircleObject* circleObject);
     void CheckObjectCollision();
     sf::Vector2f calculateVelocity(CircleObject* circleObject);
