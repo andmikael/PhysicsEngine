@@ -8,6 +8,7 @@
 #include "time.h"
 #include "circlecollider.h"
 
+// forward declaration to avoid circular dependencies
 class CircleCollider;
 
 inline const int32_t WINDOW_WIDTH = 1280;
