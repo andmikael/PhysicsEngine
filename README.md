@@ -1,5 +1,9 @@
 # PhysicsEngine
-C++ Physics simulation engine for collision detection. It uses SFML for drawing windowing and rendering.
+## DEMO
+
+https://github.com/user-attachments/assets/2e741d0e-d676-4f0c-af3d-8a60bfd41cc9
+
+C++ Physics simulation engine for collision detection. It uses SFML for window management and and rendering.
 
 Objects use verlet integration to calculate object motions
 
