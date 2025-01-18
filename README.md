@@ -1,7 +1,7 @@
 # PhysicsEngine
-A small C++ program used to simulate rudamentary object physics and collision using SFML library.
+C++ Physics simulation engine for collision detection. It uses SFML for drawing windowing and rendering.
 
-It uses verlet integration to calculate object motion.
+Objects use verlet integration to calculate object motions
 
 To run the program in linux:
 1. install SFML dev library
