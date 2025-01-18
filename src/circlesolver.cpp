@@ -6,8 +6,8 @@
 // physics are tied to FPS
 constexpr float substep = 1.0f/FRAMERATE;
 
-void CircleSolver::AddObject(sf::Vector2f position, float radius) {
-    CircleObject* circleObject = new CircleObject(position, radius);
+void CircleSolver::AddObject(sf::Vector2f position, float radius, sf::Color color) {
+    CircleObject* circleObject = new CircleObject(position, radius, color);
     objects.push_back(circleObject);
 }
 

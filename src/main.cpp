@@ -28,8 +28,10 @@ int main()
     bool is_pressed = false;
 
     // variables for creating verlet objects of random size
-    int lb = 15;
-    int ub = 35;
+    int lb_rad = 15;
+    int ub_rad = 35;
+    int lb_color = 20;
+    int ub_color = 200;
 
     while (window.isOpen()) {
         sf::Event event{};
@@ -51,8 +53,9 @@ int main()
                 mousePosition = sf::Mouse::getPosition(window);
                 coords.x = (float)mousePosition.x;
                 coords.y = (float)mousePosition.y;
-                float rad = float(rand() % (ub - lb + 1)) + lb;
-                solver.AddObject(coords, rad);
+                float rad = float(rand() % (ub_rad - lb_rad + 1)) + lb_rad;
+                sf::Color color((rand() % 255), (rand() % 255), (rand() % 255), 255);
+                solver.AddObject(coords, rad, color);
             }
 
         } else if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
@@ -61,7 +64,7 @@ int main()
                 mousePosition = sf::Mouse::getPosition(window);
                 coords.x = (float)mousePosition.x;
                 coords.y = (float)mousePosition.y;
-                CircleCollider* circleCollider = new CircleCollider(coords, 200.0f, 2.0f, true, true, 128);
+                CircleCollider* circleCollider = new CircleCollider(coords, 200.0f, 2.5f, true, true, 128);
                 circleColliders.push_back(circleCollider);
             }
         } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
