@@ -61,7 +61,7 @@ int main()
                 mousePosition = sf::Mouse::getPosition(window);
                 coords.x = (float)mousePosition.x;
                 coords.y = (float)mousePosition.y;
-                CircleCollider* circleCollider = new CircleCollider(coords, 300.0f, 1.0f, true, true, 128);
+                CircleCollider* circleCollider = new CircleCollider(coords, 200.0f, 1.0f, true, true, 128);
                 circleColliders.push_back(circleCollider);
             }
         }

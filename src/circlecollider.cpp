@@ -1,4 +1,5 @@
 #include "circlecollider.h"
+#include <iostream>
 
     CircleCollider::CircleCollider(sf::Vector2f pos, float rad, float outline_width, 
                         bool outside_collision, bool inside_collision, int point_count) {
@@ -31,15 +32,17 @@
         this->outside_collision = val;
 
     }
+    // investigate why collision between balls and a circle is off centered
+    // magic constatnts are added so that circle would be aligned with the actual 
+    // pos and radius of the circle
     void CircleCollider::draw(sf::RenderWindow *window) {
-        sf::CircleShape circle(this->radius);
+        sf::CircleShape circle(this->radius - 15.0f, this->point_count);
         circle.setOrigin(this->radius, this->radius);
         circle.setScale(this->scale.x, this->scale.y);
-        circle.setPosition(this->position);
+        circle.setPosition(this->position.x+35.0f, this->position.y+32.0f);
         circle.setFillColor(sf::Color(255,0,0,0));
         circle.setOutlineColor(sf::Color(255,0,0,255));
         circle.setOutlineThickness(this->outline_width);
-        circle.setPointCount(this->point_count);
         window->draw(circle);
     }
     void CircleCollider::apply(CircleObject* obj) {
@@ -48,12 +51,12 @@
         }
             // Calculate the distance between the ball and the circle
             sf::Vector2f dist = obj->position - this->position;
-            float magnitude = sqrt(dist.x * dist.x + dist.y * dist.y) + 1.0e-9f;
+            float magnitude = sqrt(dist.x * dist.x + dist.y * dist.y) + + 1.0e-9f;
 
             // Check if the ball is inside the collider
             if (this->inside_collision)
             {
-                float delta = this->radius - obj->radius - this->outline_width;
+                float delta = this->radius - 2*obj->radius - (this->outline_width);
                 bool ball_colliding_with_circle = magnitude >= delta;
                 bool ball_inside_circle = magnitude < this->radius;
 
@@ -67,7 +70,7 @@
             // Check if the ball is outside the collider
             if (this->outside_collision)
             {
-                float rad_sum = obj->radius + this->radius + this->outline_width;
+                float rad_sum = obj->radius + this->radius + (this->outline_width);
                 bool ball_colliding_with_circle = magnitude <= rad_sum;
                 bool ball_outside_circle = magnitude > this->radius;
 
@@ -78,7 +81,7 @@
                     float offset = ((obj->radius * 2.0f) + this->radius + this->outline_width);
 
                     // Update this balls position (move it to the side)
-                    obj->position += (overlap * 0.5f * (offset - magnitude));
+                    obj->position += (overlap * 0.05f * (offset - magnitude));
                 }
             }
     }
