@@ -11,26 +11,22 @@
 // forward declaration to avoid circular dependencies
 class CircleCollider;
 
-inline const int32_t WINDOW_WIDTH = 1280;
-inline const int32_t WINDOW_HEIGHT = 720;
-
 struct AABB {
     sf::Vector2f min;
     sf::Vector2f max;
 };
 
 struct CircleObject {
+
     sf::Vector2f position;
     sf::Vector2f lastPosiiton;
     sf::Vector2f acceleration;
     sf::Vector2f velocity;
 
     float start_time;
+    float radius;
 
-    float radius = 20.0f;
-    sf::Color color = sf::Color::White;
-    float timeAlive = 0.0f;
-    bool on_ground = false;
+    sf::Color color;
 
     CircleObject(sf::Vector2f position_, float radius_)
         : position{position_}

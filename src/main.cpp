@@ -16,7 +16,7 @@ int main()
     settings.antialiasingLevel = 1;
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "PhysicsEngine", sf::Style::Default, settings);
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(FRAMERATE);
 
     CircleSolver solver;
     Renderer renderer(window);
@@ -51,8 +51,8 @@ int main()
                 mousePosition = sf::Mouse::getPosition(window);
                 coords.x = (float)mousePosition.x;
                 coords.y = (float)mousePosition.y;
-                //float rad = float(rand() % (ub - lb + 1)) + lb;
-                solver.AddObject(coords, 20);
+                float rad = float(rand() % (ub - lb + 1)) + lb;
+                solver.AddObject(coords, rad);
             }
 
         } else if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
@@ -61,10 +61,14 @@ int main()
                 mousePosition = sf::Mouse::getPosition(window);
                 coords.x = (float)mousePosition.x;
                 coords.y = (float)mousePosition.y;
-                CircleCollider* circleCollider = new CircleCollider(coords, 200.0f, 1.0f, true, true, 128);
+                CircleCollider* circleCollider = new CircleCollider(coords, 200.0f, 2.0f, true, true, 128);
                 circleColliders.push_back(circleCollider);
             }
-        }
+        } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
+                mousePosition = sf::Mouse::getPosition(window);
+                coords.x = (float)mousePosition.x;
+                coords.y = (float)mousePosition.y;
+            }
 
         if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && !sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
             is_pressed = false;
