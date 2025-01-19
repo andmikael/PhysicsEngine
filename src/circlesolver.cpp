@@ -58,7 +58,7 @@ void CircleSolver::CheckObjectCollision() {
     Calculates objects velocity
 */
 sf::Vector2f CircleSolver::calculateVelocity(CircleObject* obj) {
-    return obj->position - obj->lastPosiiton;
+    return obj->position - obj->lastPosition;
 }
 
 /*
@@ -80,7 +80,7 @@ sf::Vector2f CircleSolver::calculateDisplacement(CircleObject* obj, float dt) {
 void CircleSolver::updatePosition(CircleObject* obj) {
     //float dt = Time::getTime() - obj->start_time;
     obj->velocity = calculateVelocity(obj);
-    obj->lastPosiiton = obj->position;
+    obj->lastPosition = obj->position;
     obj->position = calculateDisplacement(obj, substep);
     obj->acceleration = {};
     obj->start_time = Time::getTime();
@@ -169,4 +169,11 @@ void CircleSolver::applyBorders(CircleObject* obj) {
         object1.curr_position -= collision_normal * (collision_ratio2 * delta);
       }*/
     }
+  }
+
+  void CircleSolver::deleteObjects() {
+    for (auto obj : objects) {
+        delete obj;
+    }
+    objects.clear();
   }

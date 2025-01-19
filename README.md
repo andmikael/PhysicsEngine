@@ -16,7 +16,7 @@ To run the program in linux:
    ```
    cmake -B ./build
    cmake --build build
-   ./build/src/game
+   ./build/bin/game
    ```
 
 If using Qt creator

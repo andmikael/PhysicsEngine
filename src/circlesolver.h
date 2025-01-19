@@ -19,18 +19,21 @@ struct AABB {
 struct CircleObject {
 
     sf::Vector2f position;
-    sf::Vector2f lastPosiiton;
+    sf::Vector2f lastPosition;
     sf::Vector2f acceleration;
     sf::Vector2f velocity;
 
     float start_time;
     float radius;
 
+    bool isStatic;
+    bool isColliding;
+
     sf::Color color;
 
     CircleObject(sf::Vector2f position_, float radius_, sf::Color color_)
         : position{position_}
-        , lastPosiiton{position_}
+        , lastPosition{position_}
         , acceleration{sf::Vector2f(GRAVITY)}
         , radius{radius_}
         , start_time{Time::getTime()}
@@ -52,6 +55,7 @@ public:
     void addAcceleration(CircleObject* circleObject, sf::Vector2f acceleration);
     void applyBorders(CircleObject* obj);
     void solveCollision(CircleObject* obj1, CircleObject* obj2);
+    void deleteObjects();
 
     std::vector<CircleObject *> objects = std::vector<CircleObject *>();
 };
