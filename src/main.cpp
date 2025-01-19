@@ -120,12 +120,13 @@ int main()
                     mousePosition = sf::Mouse::getPosition(window);
                     coords.x = (float)mousePosition.x;
                     coords.y = (float)mousePosition.y;
-                    if (!segmentsolver.GetRopeState()) {
+                    segmentsolver.SpawnStructureCloth(coords, 20, 12, 0, sf::Color::White);
+                    /*if (!segmentsolver.GetRopeState()) {
                         segmentsolver.SpawnStructureRope(coords, 20, 25, 8, FIRST, sf::Color(255,255,255,255));
                     } else {
                         segmentsolver.ClearRope();
                         segmentsolver.SpawnStructureRope(coords, 20, 25, 8, FIRST, sf::Color(255,255,255,255));
-                    }
+                    }*/
                 }
             }
 

@@ -15,11 +15,15 @@ public:
     void SpawnVerletObjectStatic(sf::Vector2f position, float radius, sf::Color color);
     void SpawnStructureRope(sf::Vector2f pos, int numJoints, float distance,
             float radius, Anchoring anchoring, sf::Color color);
+    void SpawnVerletObjectNonColliding(sf::Vector2f pos, float rad, sf::Color color);
     void Draw(sf::RenderWindow& window);
     void UpdateRope();
     void ApplyLinks();
     bool GetRopeState();
     void ClearRope();
+    void SpawnStructureCloth(sf::Vector2f pos, int numOfSideJoints, float distance, float rad, sf::Color color);
+    int XYToNum(int x, int y, int width);
+
 private:
     std::vector<Segment> segments;
     std::vector<CircleObject> objects;

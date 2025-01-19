@@ -73,6 +73,20 @@ void SegmentSolver::SpawnStructureRope(sf::Vector2f pos, int numJoints, float di
     }
 }
 
+void SegmentSolver::SpawnVerletObjectNonColliding(sf::Vector2f position, float radius, sf::Color color) {
+    //if (numObjects >= MAX_OBJECTS) return;
+    //VerletObject *ball = &objects[numObjects];
+    CircleObject ball(position, radius, color);
+    ball.position = position;
+    ball.lastPosition = position;
+    ball.radius = radius;
+    ball.color = color;
+    ball.isStatic = false;
+    ball.isColliding = false;
+    objects.push_back(ball);
+    numOfObjects++;
+}
+
 void SegmentSolver::Draw(sf::RenderWindow& window) {
     //for (int i = 0; i < numOfSegments; i++) {
     //    DrawLineEx(links[i].object1->currentPos, links[i].object2->currentPos, 2.0f,
@@ -142,4 +156,42 @@ void SegmentSolver::ClearRope() {
     objects.clear();
     numOfObjects = 0;
     numOfSegments = 0;
+}
+
+int SegmentSolver::XYToNum(int x, int y, int width) {
+    return y*width + x;
+}
+
+void SegmentSolver::SpawnStructureCloth(sf::Vector2f pos, int numOfSideJoints, float distance, float rad, sf::Color color) {
+    for (int i = 0; i < numOfSideJoints; i++) {
+        for (int j = 0; j < numOfSideJoints; j++) {
+            // anchor the two top corners
+            if ((i == 0 && j == 0) || (i == 0 && j == numOfSideJoints - 1)) {
+                SpawnVerletObjectStatic(
+                        (sf::Vector2f){ pos.x + j*distance - 5, pos.y + i*distance },
+                        rad, color);
+            }
+            else {
+                SpawnVerletObjectNonColliding(
+                        (sf::Vector2f){ pos.x + j*distance, pos.y + i*distance },
+                        rad, color);
+            }
+        }
+    }
+    for (int i = 0; i < numOfSideJoints; i++) {
+        for (int j = 0; j < numOfSideJoints; j++) {
+            if (i < numOfSideJoints - 1) {
+                SpawnLink(
+                        XYToNum(i, j, numOfSideJoints),
+                        XYToNum(i + 1, j, numOfSideJoints),
+                        distance);
+            }
+            if (j < numOfSideJoints - 1) {
+                SpawnLink(
+                        XYToNum(i, j, numOfSideJoints),
+                        XYToNum(i, j + 1, numOfSideJoints),
+                        distance);
+            }
+        }
+    }
 }
