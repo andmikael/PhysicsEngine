@@ -110,6 +110,7 @@ void SegmentSolver::Draw(sf::RenderWindow& window) {
 }
 
 void SegmentSolver::UpdateRope() {
+    applyBorders();
     for (auto &obj : objects) {
         if(!obj.isStatic)  {
             obj.acceleration += GRAVITY;
@@ -195,3 +196,33 @@ void SegmentSolver::SpawnStructureCloth(sf::Vector2f pos, int numOfSideJoints, f
         }
     }
 }
+
+void SegmentSolver::applyBorders() {
+
+    for (auto& obj : objects) {
+        const float margin = MARGIN_WIDTH + obj.radius;
+        sf::Vector2f collision_normal = {0.0f, 0.0f};
+
+        // object hits the right border
+        if (obj.position.x + obj.radius >= WINDOW_WIDTH) {
+            collision_normal -= {obj.position.x - WINDOW_WIDTH + obj.radius, 0.0f};
+
+        // object hits the left border
+        } else if (obj.position.x < obj.radius) {
+            collision_normal -= {obj.position.x - obj.radius, 0.0f};
+
+        }
+
+        // object hits the bottom border
+        if (obj.position.y + obj.radius >= WINDOW_HEIGHT) {
+            collision_normal -= {0.0f, obj.position.y - WINDOW_HEIGHT + obj.radius};
+
+        // object hits the top border
+        } else if (obj.position.y < obj.radius) {
+                collision_normal += {0.0f, obj.radius};
+        }
+
+        // changes how elastic border collisions are; higher values means more rigid collisions
+        obj.position += collision_normal * RESPONSE_COEF;
+    }
+  }

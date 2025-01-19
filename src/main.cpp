@@ -16,7 +16,7 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 1;
 
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "PhysicsEngine", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "window", sf::Style::Default, settings);
     window.setFramerateLimit(FRAMERATE);
     bool success = false;
     success = ImGui::SFML::Init(window);
@@ -31,9 +31,10 @@ int main()
     sf::Vector2f coords;
 
     bool is_pressed = false;
-    bool ball_simulation = false;
+    bool ball_simulation = true;
     bool circle_simulation = true;
-    bool cloth_simulation = true;
+    bool cloth_simulation = false;
+    bool rope_simulation = false;
 
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
@@ -62,24 +63,43 @@ int main()
                     delete collider;
                 }
                 circleColliders.clear();
-            } else if (cloth_simulation) {
+            } else if (cloth_simulation || rope_simulation) {
                 segmentsolver.ClearRope();
             }
         }
 
-        if (ImGui::Button("cloth simulation") && !cloth_simulation) {
+        if (ImGui::Button("cloth simulation")) {
             cloth_simulation = true;
-            solver.deleteObjects();
             if (ball_simulation) {
+                solver.deleteObjects();
                 ball_simulation = false;
+            }
+            if (rope_simulation) {
+                segmentsolver.ClearRope();
             }
         }
 
-        if (ImGui::Button("ball simulation") && !ball_simulation) {
+        if (ImGui::Button("rope simulation")) {
+            rope_simulation = true;
+            if (ball_simulation) {
+                solver.deleteObjects();
+                ball_simulation = false;
+            }
+            if (cloth_simulation) {
+                cloth_simulation = false;
+                segmentsolver.ClearRope();
+            }
+        }
+
+        if (ImGui::Button("ball simulation")) {
             ball_simulation = true;
             if (cloth_simulation) {
                 cloth_simulation = false;
             }
+            if (rope_simulation) {
+                rope_simulation = false;
+            }
+            segmentsolver.ClearRope();
         }
         float x = ImGui::GetCursorPosX();
         float y = ImGui::GetCursorPosY();
@@ -100,36 +120,38 @@ int main()
             for (auto collider : circleColliders) {
                 solver.CheckColliderConstraint(collider);
             }
-        } else if (cloth_simulation) {
+        } else if (cloth_simulation || rope_simulation) {
             segmentsolver.UpdateRope();
             segmentsolver.ApplyLinks();
         }
-
-        
+        auto min = ImGui::GetWindowContentRegionMin();
+        auto max = ImGui::GetWindowContentRegionMax();
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            if (!is_pressed) {
+            if (io.WantCaptureMouse) {
+                // main window will not take input when
+                // pressing settings window
+            } else if (!is_pressed) {
                 is_pressed = true;
-                if (ball_simulation) {
                 mousePosition = sf::Mouse::getPosition(window);
                 coords.x = (float)mousePosition.x;
                 coords.y = (float)mousePosition.y;
-                float rad = float(rand() % (ub_rad - lb_rad + 1)) + lb_rad;
-                sf::Color color((rand() % 255), (rand() % 255), (rand() % 255), 255);
-                solver.AddObject(coords, rad, color);
+                if (ball_simulation) {
+                    float rad = float(rand() % (ub_rad - lb_rad + 1)) + lb_rad;
+                    sf::Color color((rand() % 255), (rand() % 255), (rand() % 255), 255);
+                    solver.AddObject(coords, rad, color);
                 } else if (cloth_simulation) {
-                    mousePosition = sf::Mouse::getPosition(window);
-                    coords.x = (float)mousePosition.x;
-                    coords.y = (float)mousePosition.y;
-                    segmentsolver.SpawnStructureCloth(coords, 20, 12, 0, sf::Color::White);
-                    /*if (!segmentsolver.GetRopeState()) {
-                        segmentsolver.SpawnStructureRope(coords, 20, 25, 8, FIRST, sf::Color(255,255,255,255));
-                    } else {
+                    if (segmentsolver.GetRopeState()) {
                         segmentsolver.ClearRope();
-                        segmentsolver.SpawnStructureRope(coords, 20, 25, 8, FIRST, sf::Color(255,255,255,255));
-                    }*/
+                    }
+                    segmentsolver.SpawnStructureCloth(coords, 20, 12, 0, sf::Color::White);
+                    
+                } else if (rope_simulation) {
+                    if (segmentsolver.GetRopeState()) {
+                        segmentsolver.ClearRope();
+                    }
+                    segmentsolver.SpawnStructureRope(coords, 20, 25, 8, FIRST, sf::Color::White);
                 }
             }
-
         } else if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
             if (!is_pressed) {
                 is_pressed = true;
@@ -139,9 +161,7 @@ int main()
                 CircleCollider* circleCollider = new CircleCollider(coords, 200.0f, 2.5f, true, true, 128);
                 circleColliders.push_back(circleCollider);
             }
-        } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
-            }
-
+        }
         if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && !sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
             is_pressed = false;
         }
@@ -150,7 +170,7 @@ int main()
             for (const auto collider : circleColliders) {
                 collider->draw(&window);
             }
-        } else if (cloth_simulation) {
+        } else {
             segmentsolver.Draw(window);            
         }
 

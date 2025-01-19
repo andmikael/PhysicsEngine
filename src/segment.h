@@ -23,6 +23,7 @@ public:
     void ClearRope();
     void SpawnStructureCloth(sf::Vector2f pos, int numOfSideJoints, float distance, float rad, sf::Color color);
     int XYToNum(int x, int y, int width);
+    void applyBorders();
 
 private:
     std::vector<Segment> segments;
