@@ -3,7 +3,7 @@
 https://github.com/user-attachments/assets/8ec3b764-5246-4193-ab32-dfd1415137ce
 
 ## About
-C++ Physics simulation engine for collision detection. It uses SFML for window management and rendering and ImGui for settings menu. Objects use verlet integration to calculate motion.
+C++ Physics simulation engine for collision detection. It uses SFML for window management and rendering and ImGui for settings menu. Verlet integration is used to calculate object motions.
 
 ## Compiling and running the program
 To run the program in linux:
