@@ -13,6 +13,7 @@ void Renderer::Render(CircleSolver& obj) {
         circle.setOrigin(item->radius, item->radius);
         circle.setPosition(item->position.x, item->position.y);
         circle.setFillColor(item->color);
+        window_target.draw(obj.rectangle);
         window_target.draw(circle);
     }
 }

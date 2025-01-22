@@ -59,4 +59,5 @@ public:
     void Attract(sf::Vector2f pos);
 
     std::vector<CircleObject *> objects = std::vector<CircleObject *>();
+    sf::RectangleShape rectangle;
 };

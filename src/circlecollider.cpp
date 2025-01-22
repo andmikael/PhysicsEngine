@@ -32,6 +32,10 @@
         this->outside_collision = val;
 
     }
+
+    void CircleCollider::setColor(sf::Color color) {
+        this->color = color;
+    }
     // investigate why collision between balls and a circle is off centered
     // magic constatnts are added so that circle would be aligned with the actual 
     // pos and radius of the circle
@@ -49,7 +53,7 @@
         circle.setOrigin(this->radius + this->outline_width, this->radius + this->outline_width);
         circle.setScale(this->scale.x, this->scale.y);
         circle.setPosition(this->position.x, this->position.y);
-        circle.setFillColor(sf::Color(255,0,0,0));
+        circle.setFillColor(this->color);
         circle.setOutlineColor(sf::Color(255,0,0,255));
         circle.setOutlineThickness(this->outline_width);
         window->draw(circle);
@@ -98,3 +102,28 @@
                 }
             }
     }
+
+void CircleCollider::SetHollowCircle() {
+    int rad = (WINDOW_HEIGHT - 250) / 2;
+    
+}
+
+void CircleCollider::SolveHollowCollisions(CircleObject *obj) {
+    // Calculate the distance between the ball and the circle
+            sf::Vector2f dist = obj->position - this->position;
+            float magnitude = sqrt(dist.x * dist.x + dist.y * dist.y);
+
+            // Check if the ball is inside the collider
+            if (this->inside_collision)
+            {   
+                float delta = this->radius - obj->radius;
+                bool ball_colliding_with_circle = magnitude >= delta;
+                bool ball_inside_circle = magnitude < this->radius;
+
+                if (ball_colliding_with_circle && (!this->outside_collision || ball_inside_circle))
+                {   
+                    obj->position += dist / magnitude * (delta - magnitude);
+                    return;
+                }
+            }
+}

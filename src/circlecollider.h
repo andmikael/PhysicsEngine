@@ -18,6 +18,9 @@ class CircleCollider {
 
         bool inside_collision;
         bool outside_collision;
+        bool hollow_circle;
+
+        sf::Color color;
 
         CircleCollider(sf::Vector2f pos, float rad, float outline_width, 
                         bool outside_collision, bool inside_collision, int point_count);
@@ -25,8 +28,11 @@ class CircleCollider {
         void setRadius(float radius);
         void setPosition(sf::Vector2f pos);
         void setOutlineWidth(float width);
+        void setColor(sf::Color color);
         void enableInsideCollisions(bool val);
         void enableOutsideCollisions(bool val);
         void draw(sf::RenderWindow *window);
         void apply(CircleObject* obj);
+        void SetHollowCircle();
+        void SolveHollowCollisions(CircleObject *obj);
 };

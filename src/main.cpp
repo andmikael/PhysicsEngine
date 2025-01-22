@@ -35,6 +35,7 @@ int main()
     bool circle_simulation = true;
     bool cloth_simulation = false;
     bool rope_simulation = false;
+    bool hollow_circle = false;
 
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
@@ -105,20 +106,45 @@ int main()
         float y = ImGui::GetCursorPosY();
         if (ball_simulation) {
             ImGui::SetCursorPos(ImVec2(x+40.0f, y));
-            ImGui::Button("circle colliders");
+            if(ImGui::Button("circle colliders")) {
+                if (hollow_circle) {
+                    hollow_circle = false;
+                }
+            }
             x = ImGui::GetCursorPosX();
             y = ImGui::GetCursorPosY();
             ImGui::SetCursorPos(ImVec2(x+40.0f, y));
-            ImGui::Button("Hollow circle");
+            if(ImGui::Button("Hollow circle")) {
+                if (!hollow_circle) {
+                    hollow_circle = true;
+                }
+                if (circleColliders.size() == 0) {
+                    int rad = (WINDOW_HEIGHT - 75) / 2;
+                    sf::Vector2f coords = {(float)WINDOW_WIDTH/2, (float)WINDOW_HEIGHT/2};
+                    CircleCollider* circleCollider = new CircleCollider(coords, (float)rad, 0.0f, true, true, 128);
+                    circleCollider->hollow_circle = true;
+                    solver.rectangle = sf::RectangleShape({(float)WINDOW_WIDTH, (float)WINDOW_HEIGHT});
+                    solver.rectangle.setFillColor(sf::Color::Red);
+                    circleCollider->setColor(sf::Color::Black);
+                    circleColliders.push_back(circleCollider);
+                }
+            }
         }
 
         ImGui::End();
         window.clear();
 
         if (ball_simulation) {
+
             solver.Update();
-            for (auto collider : circleColliders) {
+            if (hollow_circle) {
+                for (auto& collider : circleColliders) {
+                    solver.CheckColliderConstraint(collider);
+                }
+            } else {
+                for (auto collider : circleColliders) {
                 solver.CheckColliderConstraint(collider);
+                }
             }
         } else if (cloth_simulation || rope_simulation) {
             segmentsolver.UpdateRope();

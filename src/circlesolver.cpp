@@ -27,7 +27,11 @@ void CircleSolver::Update() {
 
 void CircleSolver::CheckColliderConstraint(CircleCollider *collider) {
     for (auto obj : objects) {
-        collider->apply(obj);
+        if (collider->hollow_circle) {
+            collider->SolveHollowCollisions(obj);
+        } else {
+            collider->apply(obj);
+        }
     }
 }
 
