@@ -161,6 +161,14 @@ int main()
                 CircleCollider* circleCollider = new CircleCollider(coords, 200.0f, 2.5f, true, true, 128);
                 circleColliders.push_back(circleCollider);
             }
+        } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
+            if (!is_pressed) {
+                is_pressed = true;
+                mousePosition = sf::Mouse::getPosition(window);
+                coords.x = (float)mousePosition.x;
+                coords.y = (float)mousePosition.y;
+                solver.Attract(coords);
+            }
         }
         if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && !sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
             is_pressed = false;

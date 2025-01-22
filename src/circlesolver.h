@@ -56,6 +56,7 @@ public:
     void applyBorders(CircleObject* obj);
     void solveCollision(CircleObject* obj1, CircleObject* obj2);
     void deleteObjects();
+    void Attract(sf::Vector2f pos);
 
     std::vector<CircleObject *> objects = std::vector<CircleObject *>();
 };

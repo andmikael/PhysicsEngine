@@ -172,8 +172,15 @@ void CircleSolver::applyBorders(CircleObject* obj) {
   }
 
   void CircleSolver::deleteObjects() {
-    for (auto obj : objects) {
+    for (auto& obj : objects) {
         delete obj;
     }
     objects.clear();
+  }
+
+  void CircleSolver::Attract(sf::Vector2f pos) {
+    for (auto& obj: objects) {
+        sf::Vector2f vec = pos - obj->position;
+        addAcceleration(obj, {10*vec.x, 10*vec.y});
+    }
   }
