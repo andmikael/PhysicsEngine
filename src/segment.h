@@ -24,6 +24,7 @@ public:
     void SpawnStructureCloth(sf::Vector2f pos, int numOfSideJoints, float distance, float rad, sf::Color color);
     int XYToNum(int x, int y, int width);
     void applyBorders();
+    void Attract(sf::Vector2f pos);
 
 private:
     std::vector<Segment> segments;

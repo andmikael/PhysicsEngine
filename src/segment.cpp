@@ -226,3 +226,11 @@ void SegmentSolver::applyBorders() {
         obj.position += collision_normal * RESPONSE_COEF;
     }
   }
+
+  void SegmentSolver::Attract(sf::Vector2f pos)
+  {
+        for (auto& obj: objects) {
+        sf::Vector2f vec = pos - obj.position;
+        obj.acceleration = {10*vec.x, 10*vec.y};
+    }
+  }

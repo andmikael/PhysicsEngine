@@ -167,7 +167,11 @@ int main()
                 mousePosition = sf::Mouse::getPosition(window);
                 coords.x = (float)mousePosition.x;
                 coords.y = (float)mousePosition.y;
-                solver.Attract(coords);
+                if(ball_simulation) {
+                    solver.Attract(coords);
+                } else if (cloth_simulation || rope_simulation) {
+                    segmentsolver.Attract(coords);
+                }        
             }
         }
         if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && !sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
